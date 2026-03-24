@@ -1,0 +1,103 @@
+{{define "acl.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}} - GoSQL Admin</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        {{template "sidebar" .}}
+        <main class="content">
+            <div class="page-header">
+                <h1>ACL Rules</h1>
+                <button class="btn btn-primary" onclick="openAddModal()">+ Add New</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('data', event)">Data</button>
+                <button class="tab" onclick="showTab('schema', event)">Schema</button>
+            </div>
+
+            <div id="data-tab" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" id="search" placeholder="Search by source or destination IP..." oninput="searchRecords()">
+                </div>
+                <div class="table-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Source IP</th>
+                                <th>Destination IP</th>
+                                <th>Protocol</th>
+                                <th>Source Port</th>
+                                <th>Dest Port</th>
+                                <th>Action</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="stats" class="stats">
+                    Total: <span id="total-count">0</span> records
+                </div>
+            </div>
+
+            <div id="schema-tab" class="tab-content">
+                <div class="table-container">
+                    <table id="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Type</th>
+                                <th>Nullable</th>
+                                <th>Primary Key</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schema-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{template "modal" .}}
+        </main>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script>
+        const entityType = 'acl';
+        const apiEndpoint = '/api/acl';
+
+        const fields = [
+            { name: 'src_ip', label: 'Source IP', type: 'text', required: true },
+            { name: 'dst_ip', label: 'Destination IP', type: 'text', required: true },
+            { name: 'protocol', label: 'Protocol', type: 'select', required: true, options: [
+                { value: 'tcp', label: 'TCP' },
+                { value: 'udp', label: 'UDP' },
+                { value: 'icmp', label: 'ICMP' },
+                { value: 'any', label: 'Any' }
+            ]},
+            { name: 'src_port', label: 'Source Port', type: 'text', required: false },
+            { name: 'dst_port', label: 'Destination Port', type: 'text', required: false },
+            { name: 'action', label: 'Action', type: 'select', required: true, options: [
+                { value: 'permit', label: 'Permit' },
+                { value: 'deny', label: 'Deny' },
+                { value: 'permit+reflect', label: 'Permit + Reflect' }
+            ]}
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchRecords();
+            fetchSchema();
+        });
+    </script>
+</body>
+</html>
+{{end}}

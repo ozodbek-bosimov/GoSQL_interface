@@ -1,0 +1,24 @@
+{{define "sidebar"}}
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>GoSQL Admin</h2>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="/users" class="nav-link {{if eq .activePage "users"}}active{{end}}">
+            <span>📊</span> Users
+        </a>
+        <a href="/interfaces" class="nav-link {{if eq .activePage "interfaces"}}active{{end}}">
+            <span>🌐</span> Interfaces
+        </a>
+        <a href="/acl" class="nav-link {{if eq .activePage "acl"}}active{{end}}">
+            <span>🔒</span> ACL
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="user-info">
+            <span>👤 {{.userLogin}}</span>
+        </div>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+</aside>
+{{end}}

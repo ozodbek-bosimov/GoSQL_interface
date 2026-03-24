@@ -1,0 +1,94 @@
+{{define "interfaces.html"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.title}} - GoSQL Admin</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        {{template "sidebar" .}}
+        <main class="content">
+            <div class="page-header">
+                <h1>Network Interfaces</h1>
+                <button class="btn btn-primary" onclick="openAddModal()">+ Add New</button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('data', event)">Data</button>
+                <button class="tab" onclick="showTab('schema', event)">Schema</button>
+            </div>
+
+            <div id="data-tab" class="tab-content active">
+                <div class="search-bar">
+                    <input type="text" id="search" placeholder="Search by name or IP..." oninput="searchRecords()">
+                </div>
+                <div class="table-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>IP Address</th>
+                                <th>MAC Address</th>
+                                <th>MTU</th>
+                                <th>Status</th>
+                                <th>IP Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="stats" class="stats">
+                    Total: <span id="total-count">0</span> records
+                </div>
+            </div>
+
+            <div id="schema-tab" class="tab-content">
+                <div class="table-container">
+                    <table id="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Column Name</th>
+                                <th>Type</th>
+                                <th>Nullable</th>
+                                <th>Primary Key</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schema-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{template "modal" .}}
+        </main>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script>
+        const entityType = 'interfaces';
+        const apiEndpoint = '/api/interfaces';
+
+        const fields = [
+            { name: 'name', label: 'Name', type: 'text', required: true },
+            { name: 'ip', label: 'IP Address', type: 'text', required: true },
+            { name: 'mac', label: 'MAC Address', type: 'text', required: true },
+            { name: 'mtu', label: 'MTU', type: 'number', required: true },
+            { name: 'status', label: 'Status (Active)', type: 'checkbox', required: false },
+            { name: 'ip_type', label: 'IP Type (Static)', type: 'checkbox', required: false }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchRecords();
+            fetchSchema();
+        });
+    </script>
+</body>
+</html>
+{{end}}
