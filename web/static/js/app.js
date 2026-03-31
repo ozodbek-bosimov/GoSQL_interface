@@ -63,6 +63,22 @@ function renderTable(data) {
     });
 }
 
+// Check if current user is admin
+function isAdmin() {
+    return typeof userRole !== 'undefined' && userRole === 'admin';
+}
+
+// Generate action buttons HTML (only for admin)
+function getActionButtons(id) {
+    if (!isAdmin()) return '';
+    return `
+        <td class="action-buttons">
+            <button class="btn btn-sm btn-primary" onclick="openEditModal(${id})">Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteRecord(${id})">Delete</button>
+        </td>
+    `;
+}
+
 // Generate table row HTML based on entity type
 function generateTableRow(record) {
     if (entityType === 'users') {
@@ -72,10 +88,7 @@ function generateTableRow(record) {
             <td>${record.login}</td>
             <td>${record.role}</td>
             <td>${new Date(record.created_at).toLocaleDateString('uz-UZ')}</td>
-            <td class="action-buttons">
-                <button class="btn btn-sm btn-primary" onclick="openEditModal(${record.id})">Edit</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteRecord(${record.id})">Delete</button>
-            </td>
+            ${getActionButtons(record.id)}
         `;
     } else if (entityType === 'interfaces') {
         return `
@@ -86,10 +99,7 @@ function generateTableRow(record) {
             <td>${record.mtu}</td>
             <td><span class="badge ${record.status ? 'badge-success' : 'badge-danger'}">${record.status ? 'Active' : 'Inactive'}</span></td>
             <td><span class="badge ${record.ip_type ? 'badge-success' : 'badge-danger'}">${record.ip_type ? 'Static' : 'Dynamic'}</span></td>
-            <td class="action-buttons">
-                <button class="btn btn-sm btn-primary" onclick="openEditModal(${record.id})">Edit</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteRecord(${record.id})">Delete</button>
-            </td>
+            ${getActionButtons(record.id)}
         `;
     } else if (entityType === 'acl') {
         return `
@@ -100,10 +110,7 @@ function generateTableRow(record) {
             <td>${record.src_port || '-'}</td>
             <td>${record.dst_port || '-'}</td>
             <td><span class="badge ${record.action === 'permit' || record.action === 'permit+reflect' ? 'badge-success' : 'badge-danger'}">${record.action}</span></td>
-            <td class="action-buttons">
-                <button class="btn btn-sm btn-primary" onclick="openEditModal(${record.id})">Edit</button>
-                <button class="btn btn-sm btn-danger" onclick="deleteRecord(${record.id})">Delete</button>
-            </td>
+            ${getActionButtons(record.id)}
         `;
     }
 }

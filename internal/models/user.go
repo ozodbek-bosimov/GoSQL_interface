@@ -10,12 +10,12 @@ import (
 
 // User represents a user in the system
 type User struct {
-	ID        int64      `json:"id"`
-	Name      *string    `json:"name"`
-	Login     string     `json:"login"`
-	Password  string     `json:"password,omitempty"` // Input only, cleared after operations
-	Role      string     `json:"role"`
-	CreatedAt time.Time  `json:"created_at"`
+	ID        int64     `json:"id"`
+	Name      *string   `json:"name"`
+	Login     string    `json:"login"`
+	Password  string    `json:"password,omitempty"` // Input only, cleared after operations
+	Role      string    `json:"role"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 // GetAllUsers retrieves all users with optional search

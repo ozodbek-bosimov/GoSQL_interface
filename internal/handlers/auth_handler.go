@@ -18,7 +18,7 @@ func LoginPage(c *gin.Context) {
 
 	// If already logged in, redirect to users page
 	if userID != nil {
-		c.Redirect(http.StatusFound, "/users")
+		c.Redirect(http.StatusFound, "/interfaces")
 		return
 	}
 
@@ -54,12 +54,6 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	// Check if user has admin role
-	if user.Role != "admin" {
-		c.JSON(http.StatusForbidden, gin.H{"error": "Access denied. Admin privileges required."})
-		return
-	}
-
 	// Create session
 	session := sessions.Default(c)
 	session.Set("user_id", user.ID)
@@ -70,7 +64,7 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"success": true, "redirect": "/users"})
+	c.JSON(http.StatusOK, gin.H{"success": true, "redirect": "/interfaces"})
 }
 
 // LogoutHandler handles logout

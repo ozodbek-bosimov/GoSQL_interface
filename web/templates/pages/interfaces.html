@@ -13,7 +13,7 @@
         <main class="content">
             <div class="page-header">
                 <h1>Network Interfaces</h1>
-                <button class="btn btn-primary" onclick="openAddModal()">+ Add New</button>
+                {{if eq .userRole "admin"}}<button class="btn btn-primary" onclick="openAddModal()">+ Add New</button>{{end}}
             </div>
 
             <div class="tabs">
@@ -36,7 +36,7 @@
                                 <th>MTU</th>
                                 <th>Status</th>
                                 <th>IP Type</th>
-                                <th>Actions</th>
+                                {{if eq .userRole "admin"}}<th>Actions</th>{{end}}
                             </tr>
                         </thead>
                         <tbody id="table-body">
@@ -74,6 +74,7 @@
     <script>
         const entityType = 'interfaces';
         const apiEndpoint = '/api/interfaces';
+        const userRole = '{{.userRole}}';
 
         const fields = [
             { name: 'name', label: 'Name', type: 'text', required: true },

@@ -22,3 +22,19 @@ func AuthRequired() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+// AdminRequired checks if user has admin role (use after AuthRequired)
+func AdminRequired() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		role := session.Get("user_role")
+
+		if role == nil || role.(string) != "admin" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Access denied. Admin privileges required."})
+			c.Abort()
+			return
+		}
+
+		c.Next()
+	}
+}

@@ -4,9 +4,11 @@
         <h2>GoSQL Admin</h2>
     </div>
     <nav class="sidebar-nav">
+        {{if eq .userRole "admin"}}
         <a href="/users" class="nav-link {{if eq .activePage "users"}}active{{end}}">
             <span>📊</span> Users
         </a>
+        {{end}}
         <a href="/interfaces" class="nav-link {{if eq .activePage "interfaces"}}active{{end}}">
             <span>🌐</span> Interfaces
         </a>
@@ -17,8 +19,10 @@
     <div class="sidebar-footer">
         <div class="user-info">
             <span>👤 {{.userLogin}}</span>
+            <span class="role-badge">{{.userRole}}</span>
         </div>
         <a href="/logout" class="logout-btn">Logout</a>
     </div>
 </aside>
 {{end}}
+

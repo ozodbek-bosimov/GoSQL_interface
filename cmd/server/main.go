@@ -54,41 +54,48 @@ func main() {
 	router.POST("/login", handlers.LoginHandler)
 	router.GET("/logout", handlers.LogoutHandler)
 
-	// Redirect root to users page
+	// Redirect root to interfaces page
 	router.GET("/", func(c *gin.Context) {
-		c.Redirect(http.StatusFound, "/users")
+		c.Redirect(http.StatusFound, "/interfaces")
 	})
 
-	// Protected routes
+	// Protected routes (all authenticated users)
 	authorized := router.Group("/")
 	authorized.Use(middleware.AuthRequired())
 	{
-		// Users routes
-		authorized.GET("/users", handlers.ListUsersPage)
-		authorized.GET("/api/users", handlers.GetUsersAPI)
-		authorized.GET("/api/users/schema", handlers.GetUserSchemaAPI)
-		authorized.GET("/api/users/:id", getUserByIDHandler)
-		authorized.POST("/api/users", handlers.CreateUserAPI)
-		authorized.PUT("/api/users/:id", handlers.UpdateUserAPI)
-		authorized.DELETE("/api/users/:id", handlers.DeleteUserAPI)
-
-		// Interfaces routes
+		// Read-only routes (all authenticated users can view)
 		authorized.GET("/interfaces", handlers.ListInterfacesPage)
 		authorized.GET("/api/interfaces", handlers.GetInterfacesAPI)
 		authorized.GET("/api/interfaces/schema", handlers.GetInterfaceSchemaAPI)
 		authorized.GET("/api/interfaces/:id", getInterfaceByIDHandler)
-		authorized.POST("/api/interfaces", handlers.CreateInterfaceAPI)
-		authorized.PUT("/api/interfaces/:id", handlers.UpdateInterfaceAPI)
-		authorized.DELETE("/api/interfaces/:id", handlers.DeleteInterfaceAPI)
 
-		// ACL routes
 		authorized.GET("/acl", handlers.ListACLsPage)
 		authorized.GET("/api/acl", handlers.GetACLsAPI)
 		authorized.GET("/api/acl/schema", handlers.GetACLSchemaAPI)
 		authorized.GET("/api/acl/:id", getACLByIDHandler)
-		authorized.POST("/api/acl", handlers.CreateACLAPI)
-		authorized.PUT("/api/acl/:id", handlers.UpdateACLAPI)
-		authorized.DELETE("/api/acl/:id", handlers.DeleteACLAPI)
+	}
+
+	// Admin-only routes
+	admin := router.Group("/")
+	admin.Use(middleware.AuthRequired(), middleware.AdminRequired())
+	{
+		// Users management (admin only)
+		admin.GET("/users", handlers.ListUsersPage)
+		admin.GET("/api/users", handlers.GetUsersAPI)
+		admin.GET("/api/users/schema", handlers.GetUserSchemaAPI)
+		admin.GET("/api/users/:id", getUserByIDHandler)
+		admin.POST("/api/users", handlers.CreateUserAPI)
+		admin.PUT("/api/users/:id", handlers.UpdateUserAPI)
+		admin.DELETE("/api/users/:id", handlers.DeleteUserAPI)
+
+		// Write operations (admin only)
+		admin.POST("/api/interfaces", handlers.CreateInterfaceAPI)
+		admin.PUT("/api/interfaces/:id", handlers.UpdateInterfaceAPI)
+		admin.DELETE("/api/interfaces/:id", handlers.DeleteInterfaceAPI)
+
+		admin.POST("/api/acl", handlers.CreateACLAPI)
+		admin.PUT("/api/acl/:id", handlers.UpdateACLAPI)
+		admin.DELETE("/api/acl/:id", handlers.DeleteACLAPI)
 	}
 
 	// Start server

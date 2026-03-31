@@ -18,6 +18,7 @@ func ListACLsPage(c *gin.Context) {
 		"title":      "ACL",
 		"activePage": "acl",
 		"userLogin":  session.Get("user_login"),
+		"userRole":   session.Get("user_role"),
 	})
 }
 
