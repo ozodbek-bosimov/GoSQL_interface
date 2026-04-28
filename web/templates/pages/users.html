@@ -68,11 +68,13 @@
             {{template "modal" .}}
         </main>
     </div>
-    <script src="/static/js/app.js"></script>
+    <script>
+        const userRole = '{{.userRole}}';
+    </script>
+    <script src="/static/js/app.js?v=2"></script>
     <script>
         const entityType = 'users';
         const apiEndpoint = '/api/users';
-        const userRole = '{{.userRole}}';
 
         const fields = [
             { name: 'name', label: 'Name', type: 'text', required: false },

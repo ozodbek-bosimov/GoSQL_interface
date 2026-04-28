@@ -33,6 +33,11 @@ func GetUsersAPI(c *gin.Context) {
 		return
 	}
 
+	// Clear password hashes before sending to frontend
+	for i := range users {
+		users[i].Password = ""
+	}
+
 	c.JSON(http.StatusOK, users)
 }
 

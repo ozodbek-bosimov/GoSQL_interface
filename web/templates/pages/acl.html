@@ -70,11 +70,13 @@
             {{template "modal" .}}
         </main>
     </div>
-    <script src="/static/js/app.js"></script>
+    <script>
+        const userRole = '{{.userRole}}';
+    </script>
+    <script src="/static/js/app.js?v=2"></script>
     <script>
         const entityType = 'acl';
         const apiEndpoint = '/api/acl';
-        const userRole = '{{.userRole}}';
 
         const fields = [
             { name: 'src_ip', label: 'Source IP', type: 'text', required: true },

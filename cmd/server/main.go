@@ -125,6 +125,8 @@ func getUserByIDHandler(c *gin.Context) {
 		return
 	}
 
+	// Clear password hash before sending to frontend
+	user.Password = ""
 	c.JSON(http.StatusOK, user)
 }
 
