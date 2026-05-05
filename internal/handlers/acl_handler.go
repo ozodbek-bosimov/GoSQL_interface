@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListACLsPage renders the ACL management page
 func ListACLsPage(c *gin.Context) {
 	session := sessions.Default(c)
 	c.HTML(http.StatusOK, "acl.html", gin.H{
@@ -22,7 +21,6 @@ func ListACLsPage(c *gin.Context) {
 	})
 }
 
-// GetACLsAPI returns ACL rules as JSON with optional search
 func GetACLsAPI(c *gin.Context) {
 	search := c.DefaultQuery("search", "")
 	db := database.GetDB()
@@ -36,7 +34,6 @@ func GetACLsAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, acls)
 }
 
-// CreateACLAPI creates a new ACL rule
 func CreateACLAPI(c *gin.Context) {
 	var acl models.ACL
 	if err := c.ShouldBindJSON(&acl); err != nil {
@@ -53,7 +50,6 @@ func CreateACLAPI(c *gin.Context) {
 	c.JSON(http.StatusCreated, acl)
 }
 
-// UpdateACLAPI updates an existing ACL rule
 func UpdateACLAPI(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -77,7 +73,6 @@ func UpdateACLAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, acl)
 }
 
-// DeleteACLAPI deletes an ACL rule
 func DeleteACLAPI(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -94,7 +89,6 @@ func DeleteACLAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ACL rule deleted successfully"})
 }
 
-// GetACLSchemaAPI returns the schema for ACL table
 func GetACLSchemaAPI(c *gin.Context) {
 	schema := []map[string]interface{}{
 		{"name": "id", "type": "BIGINT", "nullable": false, "primary": true},

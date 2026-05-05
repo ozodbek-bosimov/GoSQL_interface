@@ -1,10 +1,7 @@
-// Global variables
 let currentEditId = null;
 let searchTimeout = null;
 
-// Tab switching
 function showTab(tabName, event) {
-    // Hide all tabs
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
     });
@@ -12,12 +9,10 @@ function showTab(tabName, event) {
         tab.classList.remove('active');
     });
 
-    // Show selected tab
     document.getElementById(tabName + '-tab').classList.add('active');
     if (event && event.target) {
         event.target.classList.add('active');
     } else {
-        // Fallback: find the tab button by text content
         document.querySelectorAll('.tab').forEach(tab => {
             if (tab.textContent.toLowerCase().includes(tabName.toLowerCase())) {
                 tab.classList.add('active');
@@ -25,13 +20,11 @@ function showTab(tabName, event) {
         });
     }
 
-    // Load schema if schema tab is selected
     if (tabName === 'schema') {
         fetchSchema();
     }
 }
 
-// Fetch records from API
 async function fetchRecords(search = '') {
     try {
         const url = `${apiEndpoint}?search=${encodeURIComponent(search)}`;
@@ -46,7 +39,6 @@ async function fetchRecords(search = '') {
     }
 }
 
-// Render table rows
 function renderTable(data) {
     const tbody = document.getElementById('table-body');
     tbody.innerHTML = '';
@@ -63,12 +55,10 @@ function renderTable(data) {
     });
 }
 
-// Check if current user is admin
 function isAdmin() {
     return typeof userRole !== 'undefined' && userRole === 'admin';
 }
 
-// Generate action buttons HTML (only for admin)
 function getActionButtons(id) {
     if (!isAdmin()) return '';
     return `
@@ -79,7 +69,6 @@ function getActionButtons(id) {
     `;
 }
 
-// Generate table row HTML based on entity type
 function generateTableRow(record) {
     if (entityType === 'users') {
         return `
@@ -115,7 +104,6 @@ function generateTableRow(record) {
     }
 }
 
-// Search with debouncing
 function searchRecords() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
@@ -124,7 +112,6 @@ function searchRecords() {
     }, 300);
 }
 
-// Open modal for adding new record
 function openAddModal() {
     currentEditId = null;
     document.getElementById('modal-title').textContent = 'Add New';
@@ -132,7 +119,6 @@ function openAddModal() {
     document.getElementById('modal').style.display = 'flex';
 }
 
-// Open modal for editing record
 async function openEditModal(id) {
     currentEditId = id;
     document.getElementById('modal-title').textContent = 'Edit';
@@ -152,7 +138,6 @@ async function openEditModal(id) {
     }
 }
 
-// Generate form fields
 function generateFormFields(data = {}) {
     const formFields = document.getElementById('form-fields');
     formFields.innerHTML = '';
@@ -217,7 +202,6 @@ function generateFormFields(data = {}) {
                 input.value = data[field.name];
             }
 
-            // For password field in edit mode, make it optional
             if (field.type === 'password' && currentEditId) {
                 input.required = false;
             }
@@ -228,13 +212,11 @@ function generateFormFields(data = {}) {
     });
 }
 
-// Close modal
 function closeModal() {
     document.getElementById('modal').style.display = 'none';
     currentEditId = null;
 }
 
-// Save record (create or update)
 async function saveRecord() {
     const formData = {};
 
@@ -282,7 +264,6 @@ async function saveRecord() {
     }
 }
 
-// Delete record
 async function deleteRecord(id) {
     if (!confirm('Are you sure you want to delete this record?')) {
         return;
@@ -306,7 +287,6 @@ async function deleteRecord(id) {
     }
 }
 
-// Fetch and display schema
 async function fetchSchema() {
     console.log('Fetching schema from:', `${apiEndpoint}/schema`);
     try {
@@ -354,9 +334,7 @@ async function fetchSchema() {
     }
 }
 
-// Show success/error message
 function showMessage(message, type) {
-    // Create message element
     const msgDiv = document.createElement('div');
     msgDiv.className = type === 'success' ? 'success-message' : 'error-message';
     msgDiv.textContent = message;
@@ -370,13 +348,11 @@ function showMessage(message, type) {
 
     document.body.appendChild(msgDiv);
 
-    // Remove after 3 seconds
     setTimeout(() => {
         msgDiv.remove();
     }, 3000);
 }
 
-// Close modal on outside click
 window.onclick = function(event) {
     const modal = document.getElementById('modal');
     if (event.target === modal) {

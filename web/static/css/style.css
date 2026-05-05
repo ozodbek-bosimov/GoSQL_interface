@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -13,13 +12,11 @@ body {
     background-color: #f5f5f5;
 }
 
-/* Container Layout */
 .container {
     display: flex;
     min-height: 100vh;
 }
 
-/* Sidebar */
 .sidebar {
     width: 250px;
     background-color: #2c3e50;
@@ -110,7 +107,6 @@ body {
     background-color: #c0392b;
 }
 
-/* Main Content */
 .content {
     flex: 1;
     margin-left: 250px;
@@ -129,7 +125,6 @@ body {
     font-weight: 600;
 }
 
-/* Tabs */
 .tabs {
     display: flex;
     gap: 10px;
@@ -159,7 +154,6 @@ body {
     font-weight: 600;
 }
 
-/* Tab Content */
 .tab-content {
     display: none;
 }
@@ -168,7 +162,6 @@ body {
     display: block;
 }
 
-/* Search Bar */
 .search-bar {
     margin-bottom: 20px;
 }
@@ -187,7 +180,6 @@ body {
     border-color: #3498db;
 }
 
-/* Table */
 .table-container {
     background: white;
     border-radius: 8px;
@@ -223,13 +215,11 @@ tbody tr:hover {
     background-color: #f8f9fa;
 }
 
-/* Stats */
 .stats {
     font-size: 13px;
     color: #666;
 }
 
-/* Buttons */
 .btn {
     padding: 8px 16px;
     border: none;
@@ -288,13 +278,11 @@ tbody tr:hover {
     display: block;
 }
 
-/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 5px;
 }
 
-/* Modal */
 .modal {
     position: fixed;
     top: 0;
@@ -353,7 +341,6 @@ tbody tr:hover {
     border-top: 1px solid #dee2e6;
 }
 
-/* Forms */
 .form-group {
     margin-bottom: 15px;
 }
@@ -387,7 +374,6 @@ tbody tr:hover {
     border-color: #3498db;
 }
 
-/* Login Page */
 .login-body {
     display: flex;
     justify-content: center;
@@ -443,7 +429,6 @@ tbody tr:hover {
     font-size: 13px;
 }
 
-/* Checkbox wrapper */
 .checkbox-wrapper {
     display: flex;
     align-items: center;
@@ -454,7 +439,6 @@ tbody tr:hover {
     font-weight: normal;
 }
 
-/* Boolean badge */
 .badge {
     display: inline-block;
     padding: 3px 8px;
@@ -473,7 +457,6 @@ tbody tr:hover {
     color: #721c24;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .sidebar {
         width: 200px;

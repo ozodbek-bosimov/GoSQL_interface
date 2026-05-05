@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// Interface represents a network interface
 type Interface struct {
 	ID        int64     `json:"id"`
 	Name      string    `json:"name"`
@@ -18,7 +17,6 @@ type Interface struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-// GetAllInterfaces retrieves all interfaces with optional search
 func GetAllInterfaces(db *sql.DB, search string) ([]Interface, error) {
 	query := `
 		SELECT id, name, ip, mac, mtu, status, ip_type, created_at
@@ -47,7 +45,6 @@ func GetAllInterfaces(db *sql.DB, search string) ([]Interface, error) {
 	return interfaces, nil
 }
 
-// GetInterfaceByID retrieves an interface by ID
 func GetInterfaceByID(db *sql.DB, id int64) (*Interface, error) {
 	query := `SELECT id, name, ip, mac, mtu, status, ip_type, created_at FROM interfaces WHERE id = $1`
 
@@ -63,7 +60,6 @@ func GetInterfaceByID(db *sql.DB, id int64) (*Interface, error) {
 	return &i, nil
 }
 
-// CreateInterface creates a new interface
 func CreateInterface(db *sql.DB, iface *Interface) error {
 	query := `
 		INSERT INTO interfaces (name, ip, mac, mtu, status, ip_type)
@@ -80,7 +76,6 @@ func CreateInterface(db *sql.DB, iface *Interface) error {
 	return nil
 }
 
-// UpdateInterface updates an existing interface
 func UpdateInterface(db *sql.DB, iface *Interface) error {
 	query := `
 		UPDATE interfaces
@@ -96,7 +91,6 @@ func UpdateInterface(db *sql.DB, iface *Interface) error {
 	return nil
 }
 
-// DeleteInterface deletes an interface by ID
 func DeleteInterface(db *sql.DB, id int64) error {
 	query := `DELETE FROM interfaces WHERE id = $1`
 

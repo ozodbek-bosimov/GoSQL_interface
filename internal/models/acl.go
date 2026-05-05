@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// ACL represents an access control list rule
 type ACL struct {
 	ID        int64     `json:"id"`
 	SrcIP     string    `json:"src_ip"`
@@ -18,7 +17,6 @@ type ACL struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-// GetAllACLs retrieves all ACL rules with optional search
 func GetAllACLs(db *sql.DB, search string) ([]ACL, error) {
 	query := `
 		SELECT id, src_ip, dst_ip, protocol, src_port, dst_port, action, created_at
@@ -47,7 +45,6 @@ func GetAllACLs(db *sql.DB, search string) ([]ACL, error) {
 	return acls, nil
 }
 
-// GetACLByID retrieves an ACL rule by ID
 func GetACLByID(db *sql.DB, id int64) (*ACL, error) {
 	query := `SELECT id, src_ip, dst_ip, protocol, src_port, dst_port, action, created_at FROM acl WHERE id = $1`
 
@@ -63,7 +60,6 @@ func GetACLByID(db *sql.DB, id int64) (*ACL, error) {
 	return &a, nil
 }
 
-// CreateACL creates a new ACL rule
 func CreateACL(db *sql.DB, acl *ACL) error {
 	query := `
 		INSERT INTO acl (src_ip, dst_ip, protocol, src_port, dst_port, action)
@@ -80,7 +76,6 @@ func CreateACL(db *sql.DB, acl *ACL) error {
 	return nil
 }
 
-// UpdateACL updates an existing ACL rule
 func UpdateACL(db *sql.DB, acl *ACL) error {
 	query := `
 		UPDATE acl
@@ -96,7 +91,6 @@ func UpdateACL(db *sql.DB, acl *ACL) error {
 	return nil
 }
 
-// DeleteACL deletes an ACL rule by ID
 func DeleteACL(db *sql.DB, id int64) error {
 	query := `DELETE FROM acl WHERE id = $1`
 

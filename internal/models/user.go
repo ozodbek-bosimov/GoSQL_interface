@@ -8,17 +8,15 @@ import (
 	"gosql_interface/internal/utils"
 )
 
-// User represents a user in the system
 type User struct {
 	ID        int64     `json:"id"`
 	Name      *string   `json:"name"`
 	Login     string    `json:"login"`
-	Password  string    `json:"password,omitempty"` // Input only, cleared after operations
+	Password  string    `json:"password,omitempty"`
 	Role      string    `json:"role"`
 	CreatedAt time.Time `json:"created_at"`
 }
 
-// GetAllUsers retrieves all users with optional search
 func GetAllUsers(db *sql.DB, search string) ([]User, error) {
 	query := `
 		SELECT id, name, login, password, role, created_at
@@ -47,7 +45,6 @@ func GetAllUsers(db *sql.DB, search string) ([]User, error) {
 	return users, nil
 }
 
-// GetUserByID retrieves a user by ID
 func GetUserByID(db *sql.DB, id int64) (*User, error) {
 	query := `SELECT id, name, login, password, role, created_at FROM users WHERE id = $1`
 
@@ -63,7 +60,6 @@ func GetUserByID(db *sql.DB, id int64) (*User, error) {
 	return &u, nil
 }
 
-// GetUserByLogin retrieves a user by login (for authentication)
 func GetUserByLogin(db *sql.DB, login string) (*User, error) {
 	query := `SELECT id, name, login, password, role, created_at FROM users WHERE login = $1`
 
@@ -79,9 +75,7 @@ func GetUserByLogin(db *sql.DB, login string) (*User, error) {
 	return &u, nil
 }
 
-// CreateUser creates a new user with hashed password
 func CreateUser(db *sql.DB, user *User) error {
-	// Hash password before storing
 	hashedPassword, err := utils.HashPassword(user.Password)
 	if err != nil {
 		return fmt.Errorf("failed to hash password: %w", err)
@@ -101,9 +95,7 @@ func CreateUser(db *sql.DB, user *User) error {
 	return nil
 }
 
-// UpdateUser updates an existing user
 func UpdateUser(db *sql.DB, user *User) error {
-	// If password is provided, hash it
 	if user.Password != "" {
 		hashedPassword, err := utils.HashPassword(user.Password)
 		if err != nil {
@@ -120,7 +112,6 @@ func UpdateUser(db *sql.DB, user *User) error {
 			return fmt.Errorf("failed to update user: %w", err)
 		}
 	} else {
-		// Update without changing password
 		query := `
 			UPDATE users
 			SET name = $1, login = $2, role = $3
@@ -135,7 +126,6 @@ func UpdateUser(db *sql.DB, user *User) error {
 	return nil
 }
 
-// DeleteUser deletes a user by ID
 func DeleteUser(db *sql.DB, id int64) error {
 	query := `DELETE FROM users WHERE id = $1`
 

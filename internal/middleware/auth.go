@@ -7,7 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// AuthRequired checks if user is authenticated
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
@@ -23,7 +22,6 @@ func AuthRequired() gin.HandlerFunc {
 	}
 }
 
-// AdminRequired checks if user has admin role (use after AuthRequired)
 func AdminRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)

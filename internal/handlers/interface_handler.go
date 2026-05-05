@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListInterfacesPage renders the interfaces management page
 func ListInterfacesPage(c *gin.Context) {
 	session := sessions.Default(c)
 	c.HTML(http.StatusOK, "interfaces.html", gin.H{
@@ -22,7 +21,6 @@ func ListInterfacesPage(c *gin.Context) {
 	})
 }
 
-// GetInterfacesAPI returns interfaces as JSON with optional search
 func GetInterfacesAPI(c *gin.Context) {
 	search := c.DefaultQuery("search", "")
 	db := database.GetDB()
@@ -36,7 +34,6 @@ func GetInterfacesAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, interfaces)
 }
 
-// CreateInterfaceAPI creates a new interface
 func CreateInterfaceAPI(c *gin.Context) {
 	var iface models.Interface
 	if err := c.ShouldBindJSON(&iface); err != nil {
@@ -53,7 +50,6 @@ func CreateInterfaceAPI(c *gin.Context) {
 	c.JSON(http.StatusCreated, iface)
 }
 
-// UpdateInterfaceAPI updates an existing interface
 func UpdateInterfaceAPI(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -77,7 +73,6 @@ func UpdateInterfaceAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, iface)
 }
 
-// DeleteInterfaceAPI deletes an interface
 func DeleteInterfaceAPI(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -94,7 +89,6 @@ func DeleteInterfaceAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Interface deleted successfully"})
 }
 
-// GetInterfaceSchemaAPI returns the schema for interfaces table
 func GetInterfaceSchemaAPI(c *gin.Context) {
 	schema := []map[string]interface{}{
 		{"name": "id", "type": "BIGINT", "nullable": false, "primary": true},

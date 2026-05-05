@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ListUsersPage renders the users management page
 func ListUsersPage(c *gin.Context) {
 	session := sessions.Default(c)
 	c.HTML(http.StatusOK, "users.html", gin.H{
@@ -22,7 +21,6 @@ func ListUsersPage(c *gin.Context) {
 	})
 }
 
-// GetUsersAPI returns users as JSON with optional search
 func GetUsersAPI(c *gin.Context) {
 	search := c.DefaultQuery("search", "")
 	db := database.GetDB()
@@ -33,7 +31,6 @@ func GetUsersAPI(c *gin.Context) {
 		return
 	}
 
-	// Clear password hashes before sending to frontend
 	for i := range users {
 		users[i].Password = ""
 	}
@@ -41,7 +38,6 @@ func GetUsersAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-// CreateUserAPI creates a new user
 func CreateUserAPI(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -55,12 +51,10 @@ func CreateUserAPI(c *gin.Context) {
 		return
 	}
 
-	// Clear password before sending response (security)
 	user.Password = ""
 	c.JSON(http.StatusCreated, user)
 }
 
-// UpdateUserAPI updates an existing user
 func UpdateUserAPI(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -81,12 +75,10 @@ func UpdateUserAPI(c *gin.Context) {
 		return
 	}
 
-	// Clear password before sending response (security)
 	user.Password = ""
 	c.JSON(http.StatusOK, user)
 }
 
-// DeleteUserAPI deletes a user
 func DeleteUserAPI(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -103,7 +95,6 @@ func DeleteUserAPI(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
 }
 
-// GetUserSchemaAPI returns the schema for users table
 func GetUserSchemaAPI(c *gin.Context) {
 	schema := []map[string]interface{}{
 		{"name": "id", "type": "BIGINT", "nullable": false, "primary": true},

@@ -11,7 +11,6 @@ import (
 
 var db *sql.DB
 
-// InitDB initializes database connection with connection pooling
 func InitDB(databaseURL string) error {
 	var err error
 	db, err = sql.Open("postgres", databaseURL)
@@ -19,13 +18,11 @@ func InitDB(databaseURL string) error {
 		return fmt.Errorf("failed to open database: %w", err)
 	}
 
-	// Configure connection pool
 	db.SetMaxOpenConns(25)
 	db.SetMaxIdleConns(5)
 	db.SetConnMaxLifetime(5 * time.Minute)
 	db.SetConnMaxIdleTime(2 * time.Minute)
 
-	// Test connection
 	if err = db.Ping(); err != nil {
 		return fmt.Errorf("failed to ping database: %w", err)
 	}
@@ -34,12 +31,10 @@ func InitDB(databaseURL string) error {
 	return nil
 }
 
-// GetDB returns the database instance
 func GetDB() *sql.DB {
 	return db
 }
 
-// CloseDB closes the database connection
 func CloseDB() error {
 	if db != nil {
 		return db.Close()
